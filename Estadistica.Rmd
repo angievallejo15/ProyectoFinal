@@ -1,0 +1,34 @@
+
+Variable independiente: libertad de los partidos políticos
+
+Traemos la data sucia
+```{r}
+library(readxl)
+democracy <- read_excel("gsodi_pv_4.xlsx")
+View(democracy)
+```
+
+Solo nos quedaremos con las columnas de los paises, la region y Free Political Parties(C_SD13)
+```{r}
+str(democracy)
+democracylimpia <- democracy[,c(2, 6, 15)] 
+str(democracylimpia)
+```
+
+Ahora cambiamos los nombres de las columnas
+```{r}
+names(democracylimpia)=c("Country","Region","FreeParties")
+head(democracylimpia)
+```
+La variable ya esta como numerica asi que no es necesario convertirla 
+
+Nos aseguramos de que no haya espacios en blanco
+```{r}
+democracylimpia$FreeParties=trimws(democracylimpia$FreeParties,whitespace = "[\\h\\v]")
+```
+ 
+Grabamos la nueva base de datos limpia y la base de datos sucia
+```{r}
+write.csv(democracylimpia,"democracylimpia.csv", row.names = F)
+write.csv(democracy,"democracy.csv", row.names = F)
+```
